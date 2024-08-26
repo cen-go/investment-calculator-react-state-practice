@@ -12,18 +12,20 @@ function App() {
     duration: "",
   });
 
+  const isValidInput = inputData.duration >= 1 && inputData.duration;
+
   function handleInputChange(event) {
     setInputData((prevInputData) => {
       const UpdatedData = {
         ...prevInputData,
-        [event.target.id]: Number(event.target.value),
+        [event.target.id]: +event.target.value,
       };
       return UpdatedData;
     });
   }
 
   const annualData = calculateInvestmentResults(inputData);
-  const { duration } = inputData;
+  
   const warningMessage = (
     <h3 className="warning-message">
       Please enter a duration more than or equal to one year!
@@ -35,7 +37,7 @@ function App() {
       <Header />
       <main>
         <UserInput onInputChange={handleInputChange} inputState={inputData} />
-        {duration < 1 && duration ? warningMessage : <Results tableData={annualData} />}
+        {!isValidInput ? warningMessage : <Results tableData={annualData} />}
       </main>
     </>
   );
